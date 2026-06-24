@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ultimate World Cup Hub</title>
     <style>
-        /* The sleek, dark-mode styling */
+        /* Sleek Dark Mode */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #121212;
@@ -14,7 +14,6 @@
             padding: 0;
         }
         
-        /* Scrolling Banner */
         .banner {
             background-color: #ff2a2a;
             color: white;
@@ -28,7 +27,7 @@
         
         .banner-text {
             display: inline-block;
-            animation: scrollBanner 15s linear infinite;
+            animation: scrollBanner 20s linear infinite;
         }
 
         @keyframes scrollBanner {
@@ -36,7 +35,6 @@
             100% { transform: translateX(-100%); }
         }
 
-        /* Countdown Section */
         .countdown-container {
             text-align: center;
             padding: 20px;
@@ -48,13 +46,14 @@
             font-size: 2em;
             color: #00ffcc;
             font-weight: bold;
+            margin-top: 10px;
         }
 
-        /* Tabs System */
         .tabs {
             display: flex;
             justify-content: center;
             background-color: #1f1f1f;
+            flex-wrap: wrap;
         }
         
         .tab-btn {
@@ -63,15 +62,12 @@
             border: none;
             outline: none;
             cursor: pointer;
-            padding: 14px 24px;
-            font-size: 1.1em;
+            padding: 14px 20px;
+            font-size: 1em;
             transition: 0.3s;
         }
         
-        .tab-btn:hover {
-            background-color: #333;
-        }
-        
+        .tab-btn:hover { background-color: #333; }
         .tab-btn.active {
             background-color: #00ffcc;
             color: #121212;
@@ -79,7 +75,6 @@
             border-radius: 5px 5px 0 0;
         }
 
-        /* Tab Content */
         .tab-content {
             display: none;
             padding: 20px;
@@ -103,82 +98,186 @@
             margin: 10px auto;
             max-width: 600px;
             border-left: 5px solid #00ffcc;
+            text-align: center;
+        }
+
+        .past-card {
+            border-left: 5px solid #ff2a2a;
+        }
+
+        .time-24 {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #00ffcc;
+            margin: 5px 0 0 0;
+        }
+
+        .time-12 {
+            font-size: 0.8em;
+            color: #aaaaaa;
+            margin: 0;
+        }
+
+        /* Dropdown Styling */
+        .tz-controls {
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        select {
+            padding: 10px;
+            font-size: 1em;
+            background-color: #333;
+            color: white;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
+    <!-- Live Scores Banner -->
     <div class="banner">
-        <div class="banner-text">🔥 LIVE SCORES: BRA 2 - 1 ARG | FRA 0 - 0 ENG | ESP 3 - 1 GER 🔥</div>
+        <div class="banner-text">🔥 LATEST RESULTS: COL 1-0 COD | CRO 1-0 PAN | FRA 3-0 IRQ | NOR 3-2 SEN 🔥</div>
     </div>
 
+    <!-- Countdown Timer -->
     <div class="countdown-container">
-        <h2>Next Big Match Starts In:</h2>
+        <h2>⏳ Next Match Kickoff (SUI vs CAN)</h2>
         <div id="timer">Loading...</div>
     </div>
 
+    <!-- The Navigation Tabs -->
     <div class="tabs">
-        <button class="tab-btn active" onclick="openTab(event, 'Schedule')">Schedule & Times</button>
-        <button class="tab-btn" onclick="openTab(event, 'Knockouts')">Knockout Rounds</button>
-        <button class="tab-btn" onclick="openTab(event, 'Scorers')">Top Scorers</button>
+        <button class="tab-btn active" onclick="openTab(event, 'Schedule')">📅 Upcoming Matches</button>
+        <button class="tab-btn" onclick="openTab(event, 'Past')">✅ Past Results</button>
+        <button class="tab-btn" onclick="openTab(event, 'Knockouts')">🏆 Knockouts</button>
     </div>
 
+    <!-- Tab 1: Upcoming Matches -->
     <div id="Schedule" class="tab-content active">
-        <h2>Upcoming Matches</h2>
-        <div class="card">
-            <h3>Brazil vs. Argentina</h3>
-            <p><strong>Timezone:</strong> 20:00 (Local) | 15:00 (EST) | 12:00 (PST)</p>
+        <h2>Group Stage Showdowns</h2>
+        
+        <!-- The Interactive Timezone Dropdown -->
+        <div class="tz-controls">
+            <label for="timezone-select">🌍 Choose Timezone: </label>
+            <select id="timezone-select" onchange="renderMatches()">
+                <!-- JS will auto-fill "Local Time" here -->
+                <option value="America/New_York">Eastern Time (EST)</option>
+                <option value="America/Los_Angeles">Pacific Time (PST)</option>
+                <option value="Europe/London">UK Time (GMT)</option>
+                <option value="Asia/Tokyo">Japan Time (JST)</option>
+            </select>
         </div>
-        <div class="card">
-            <h3>France vs. England</h3>
-            <p><strong>Timezone:</strong> 22:00 (Local) | 17:00 (EST) | 14:00 (PST)</p>
+
+        <div id="upcoming-container">
+            <!-- JavaScript will inject the matched cards here automatically! -->
         </div>
     </div>
 
+    <!-- Tab 2: Past Results -->
+    <div id="Past" class="tab-content">
+        <h2>Recent Final Scores</h2>
+        <div class="card past-card">
+            <h3>Colombia 1 - 0 DR Congo</h3>
+            <p>Group K • Full Time</p>
+        </div>
+        <div class="card past-card">
+            <h3>Croatia 1 - 0 Panama</h3>
+            <p>Group L • Full Time</p>
+        </div>
+        <div class="card past-card">
+            <h3>France 3 - 0 Iraq</h3>
+            <p>Group I • Full Time</p>
+        </div>
+        <div class="card past-card">
+            <h3>Norway 3 - 2 Senegal</h3>
+            <p>Group I • Full Time</p>
+        </div>
+        <div class="card past-card">
+            <h3>Portugal 5 - 0 Uzbekistan</h3>
+            <p>Group K • Full Time</p>
+        </div>
+    </div>
+
+    <!-- Tab 3: Knockouts -->
     <div id="Knockouts" class="tab-content">
         <h2>Knockout Bracket</h2>
-        <div class="card">
-            <h3>Quarter Final 1</h3>
-            <p>Winner Match 1 vs Winner Match 2</p>
-        </div>
-    </div>
-
-    <div id="Scorers" class="tab-content">
-        <h2>Golden Boot Race</h2>
-        <div class="card">
-            <h3>1. Player Name - 5 Goals</h3>
-        </div>
-        <div class="card">
-            <h3>2. Player Name - 4 Goals</h3>
-        </div>
+        <p>Awaiting final group standings...</p>
     </div>
 
     <script>
         // Tab Switching Logic
         function openTab(evt, tabName) {
-            let i, tabcontent, tablinks;
-            
-            // Hide all tab content
-            tabcontent = document.getElementsByClassName("tab-content");
-            for (i = 0; i < tabcontent.length; i++) {
+            let tabcontent = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
                 tabcontent[i].classList.remove("active");
             }
-            
-            // Remove active class from all buttons
-            tablinks = document.getElementsByClassName("tab-btn");
-            for (i = 0; i < tablinks.length; i++) {
+            let tablinks = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < tablinks.length; i++) {
                 tablinks[i].classList.remove("active");
             }
-            
-            // Show current tab and add active class to clicked button
             document.getElementById(tabName).style.display = "block";
             document.getElementById(tabName).classList.add("active");
             evt.currentTarget.classList.add("active");
         }
 
-        // Simple Countdown Logic (Set for a random future date)
-        const countDownDate = new Date().getTime() + (1000 * 60 * 60 * 24 * 2); // 2 days from now
+        // --- THE MAGIC DROPDOWN LOGIC ---
+        
+        // Add the user's actual local timezone to the top of the dropdown automatically
+        const userTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const select = document.getElementById("timezone-select");
+        const localOption = document.createElement("option");
+        localOption.value = userTZ;
+        localOption.text = "📍 My Local Time (" + userTZ.split('/')[1].replace('_', ' ') + ")";
+        select.add(localOption, select.options[0]);
+        select.value = userTZ; // Set it as default
+
+        // Real upcoming matches in raw UTC time
+        const matches = [
+            { home: "Switzerland", away: "Canada", utcTime: "2026-06-24T19:00:00Z" },
+            { home: "Bosnia & Herzegovina", away: "Qatar", utcTime: "2026-06-24T19:00:00Z" },
+            { home: "Scotland", away: "Brazil", utcTime: "2026-06-24T22:00:00Z" },
+            { home: "Morocco", away: "Haiti", utcTime: "2026-06-24T22:00:00Z" },
+            { home: "Czechia", away: "Mexico", utcTime: "2026-06-25T01:00:00Z" },
+            { home: "South Africa", away: "South Korea", utcTime: "2026-06-25T01:00:00Z" }
+        ];
+
+        function renderMatches() {
+            const tz = document.getElementById("timezone-select").value;
+            const container = document.getElementById("upcoming-container");
+            container.innerHTML = ""; // Clear old matches
+
+            matches.forEach(match => {
+                const date = new Date(match.utcTime);
+                
+                // Get 24-hour format
+                const time24 = date.toLocaleTimeString('en-US', { timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: false });
+                // Get 12-hour format
+                const time12 = date.toLocaleTimeString('en-US', { timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: true });
+                // Get Date
+                const day = date.toLocaleDateString('en-US', { timeZone: tz, weekday: 'short', month: 'short', day: 'numeric' });
+
+                const card = document.createElement("div");
+                card.className = "card";
+                card.innerHTML = `
+                    <h3>${match.home} vs. ${match.away}</h3>
+                    <p style="color: #aaaaaa; margin-bottom: 5px;">${day}</p>
+                    <p class="time-24">${time24}</p>
+                    <p class="time-12">${time12}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Run once on load to show matches
+        renderMatches();
+
+        // --- COUNTDOWN LOGIC ---
+        // Counting down to the SUI vs CAN match
+        const countDownDate = new Date("2026-06-24T19:00:00Z").getTime();
 
         const x = setInterval(function() {
             const now = new Date().getTime();
@@ -189,13 +288,14 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            document.getElementById("timer").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-
             if (distance < 0) {
                 clearInterval(x);
                 document.getElementById("timer").innerHTML = "MATCH HAS STARTED!";
+            } else {
+                document.getElementById("timer").innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
             }
         }, 1000);
     </script>
 </body>
 </html>
+
