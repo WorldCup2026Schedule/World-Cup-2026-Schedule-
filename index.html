@@ -105,106 +105,104 @@
             border-left: 5px solid #ff2a2a;
         }
 
-        .time-24 {
-            font-size: 1.4em;
-            font-weight: bold;
-            color: #00ffcc;
-            margin: 5px 0 0 0;
-        }
-
-        .time-12 {
-            font-size: 0.8em;
-            color: #aaaaaa;
-            margin: 0;
-        }
+        .time-24 { font-size: 1.4em; font-weight: bold; color: #00ffcc; margin: 5px 0 0 0; }
+        .time-12 { font-size: 0.8em; color: #aaaaaa; margin: 0; }
+        .score-display { font-size: 2em; font-weight: bold; color: #ff2a2a; margin: 10px 0; }
 
         /* Dropdown Styling */
-        .tz-controls {
-            margin: 20px auto;
-            text-align: center;
+        .tz-controls { margin: 20px auto; text-align: center; }
+        select {
+            padding: 10px; font-size: 1em; background-color: #333;
+            color: white; border: 1px solid #00ffcc; border-radius: 5px; cursor: pointer;
         }
 
-        select {
-            padding: 10px;
-            font-size: 1em;
-            background-color: #333;
-            color: white;
-            border: 1px solid #00ffcc;
-            border-radius: 5px;
-            cursor: pointer;
+        /* Group Tables Grid */
+        .groups-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
         }
+        .group-table {
+            background-color: #1f1f1f;
+            border-radius: 8px;
+            padding: 15px;
+            border-top: 4px solid #00ffcc;
+        }
+        .group-table h3 { margin-top: 0; color: #00ffcc; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 8px; border-bottom: 1px solid #333; }
+        th { color: #aaaaaa; font-size: 0.9em; }
+
+        /* Top Scorers List */
+        .scorer-item {
+            display: flex;
+            justify-content: space-between;
+            background-color: #1f1f1f;
+            padding: 15px;
+            margin: 10px auto;
+            max-width: 500px;
+            border-radius: 8px;
+            border-left: 5px solid #ffaa00;
+            font-size: 1.2em;
+        }
+        .goals { font-weight: bold; color: #ffaa00; }
     </style>
 </head>
 <body>
 
     <!-- Live Scores Banner -->
     <div class="banner">
-        <div class="banner-text">🔥 LATEST RESULTS: COL 1-0 COD | CRO 1-0 PAN | FRA 3-0 IRQ | NOR 3-2 SEN 🔥</div>
+        <div class="banner-text">🔥 WELCOME TO THE ULTIMATE 2026 WORLD CUP TRACKER - 48 TEAMS, 104 MATCHES, 1 CHAMPION 🔥</div>
     </div>
 
     <!-- Countdown Timer -->
     <div class="countdown-container">
-        <h2>⏳ Next Match Kickoff (SUI vs CAN)</h2>
+        <h2>⏳ Next Match Kickoff</h2>
         <div id="timer">Loading...</div>
     </div>
 
     <!-- The Navigation Tabs -->
     <div class="tabs">
-        <button class="tab-btn active" onclick="openTab(event, 'Schedule')">📅 Upcoming Matches</button>
+        <button class="tab-btn active" onclick="openTab(event, 'Schedule')">📅 Upcoming</button>
         <button class="tab-btn" onclick="openTab(event, 'Past')">✅ Past Results</button>
+        <button class="tab-btn" onclick="openTab(event, 'Groups')">📊 Groups A-L</button>
+        <button class="tab-btn" onclick="openTab(event, 'Scorers')">⚽ Top Scorers</button>
         <button class="tab-btn" onclick="openTab(event, 'Knockouts')">🏆 Knockouts</button>
     </div>
 
     <!-- Tab 1: Upcoming Matches -->
     <div id="Schedule" class="tab-content active">
-        <h2>Group Stage Showdowns</h2>
-        
-        <!-- The Interactive Timezone Dropdown -->
+        <h2>Remaining Group Stage Showdowns</h2>
         <div class="tz-controls">
             <label for="timezone-select">🌍 Choose Timezone: </label>
-            <select id="timezone-select" onchange="renderMatches()">
-                <!-- JS will auto-fill "Local Time" here -->
-                <option value="America/New_York">Eastern Time (EST)</option>
-                <option value="America/Los_Angeles">Pacific Time (PST)</option>
-                <option value="Europe/London">UK Time (GMT)</option>
-                <option value="Asia/Tokyo">Japan Time (JST)</option>
-            </select>
+            <select id="timezone-select" onchange="renderMatches()"></select>
         </div>
-
-        <div id="upcoming-container">
-            <!-- JavaScript will inject the matched cards here automatically! -->
-        </div>
+        <div id="upcoming-container"></div>
     </div>
 
     <!-- Tab 2: Past Results -->
     <div id="Past" class="tab-content">
-        <h2>Recent Final Scores</h2>
-        <div class="card past-card">
-            <h3>Colombia 1 - 0 DR Congo</h3>
-            <p>Group K • Full Time</p>
-        </div>
-        <div class="card past-card">
-            <h3>Croatia 1 - 0 Panama</h3>
-            <p>Group L • Full Time</p>
-        </div>
-        <div class="card past-card">
-            <h3>France 3 - 0 Iraq</h3>
-            <p>Group I • Full Time</p>
-        </div>
-        <div class="card past-card">
-            <h3>Norway 3 - 2 Senegal</h3>
-            <p>Group I • Full Time</p>
-        </div>
-        <div class="card past-card">
-            <h3>Portugal 5 - 0 Uzbekistan</h3>
-            <p>Group K • Full Time</p>
-        </div>
+        <h2>All Results (Since June 11)</h2>
+        <div id="past-container"></div>
     </div>
 
-    <!-- Tab 3: Knockouts -->
+    <!-- Tab 3: Groups -->
+    <div id="Groups" class="tab-content">
+        <h2>Group Stage Standings</h2>
+        <div class="groups-grid" id="groups-container"></div>
+    </div>
+
+    <!-- Tab 4: Top Scorers -->
+    <div id="Scorers" class="tab-content">
+        <h2>Golden Boot Race</h2>
+        <div id="scorers-container"></div>
+    </div>
+
+    <!-- Tab 5: Knockouts -->
     <div id="Knockouts" class="tab-content">
         <h2>Knockout Bracket</h2>
-        <p>Awaiting final group standings...</p>
+        <p>Awaiting final 32 teams from the Group Stage...</p>
     </div>
 
     <script>
@@ -224,78 +222,157 @@
             evt.currentTarget.classList.add("active");
         }
 
-        // --- THE MAGIC DROPDOWN LOGIC ---
-        
-        // Add the user's actual local timezone to the top of the dropdown automatically
+        // Timezone Magic
         const userTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
         const select = document.getElementById("timezone-select");
-        const localOption = document.createElement("option");
-        localOption.value = userTZ;
-        localOption.text = "📍 My Local Time (" + userTZ.split('/')[1].replace('_', ' ') + ")";
-        select.add(localOption, select.options[0]);
-        select.value = userTZ; // Set it as default
-
-        // Real upcoming matches in raw UTC time
-        const matches = [
-            { home: "Switzerland", away: "Canada", utcTime: "2026-06-24T19:00:00Z" },
-            { home: "Bosnia & Herzegovina", away: "Qatar", utcTime: "2026-06-24T19:00:00Z" },
-            { home: "Scotland", away: "Brazil", utcTime: "2026-06-24T22:00:00Z" },
-            { home: "Morocco", away: "Haiti", utcTime: "2026-06-24T22:00:00Z" },
-            { home: "Czechia", away: "Mexico", utcTime: "2026-06-25T01:00:00Z" },
-            { home: "South Africa", away: "South Korea", utcTime: "2026-06-25T01:00:00Z" }
+        const options = [
+            { val: userTZ, text: "📍 My Local Time (" + userTZ.split('/')[1]?.replace('_', ' ') + ")" },
+            { val: "America/Mexico_City", text: "Mexico City (CDMX)" },
+            { val: "America/New_York", text: "Eastern Time (EST)" },
+            { val: "America/Los_Angeles", text: "Pacific Time (PST)" },
+            { val: "Europe/London", text: "UK Time (GMT)" },
+            { val: "Asia/Tokyo", text: "Japan Time (JST)" }
         ];
+        options.forEach(opt => {
+            let el = document.createElement("option");
+            el.value = opt.val; el.text = opt.text;
+            select.add(el);
+        });
+
+        // --- MASTER DATA LISTS ---
+
+        // 1. All Matches (You can keep adding to this list!)
+        const matches = [
+            // Opening Matches (June 11 & 12)
+            { home: "Mexico", away: "Poland", group: "A", status: "past", score: "2 - 1", utcTime: "2026-06-11T20:00:00Z" },
+            { home: "USA", away: "Wales", group: "B", status: "past", score: "3 - 0", utcTime: "2026-06-12T19:00:00Z" },
+            { home: "Canada", away: "South Africa", group: "C", status: "past", score: "1 - 1", utcTime: "2026-06-12T22:00:00Z" },
+            
+            // Recent Past Matches
+            { home: "Colombia", away: "DR Congo", group: "K", status: "past", score: "1 - 0", utcTime: "2026-06-23T16:00:00Z" },
+            { home: "France", away: "Iraq", group: "I", status: "past", score: "3 - 0", utcTime: "2026-06-23T19:00:00Z" },
+            
+            // Upcoming Matches (June 24+ until knockouts)
+            { home: "Switzerland", away: "Canada", group: "C", status: "upcoming", score: "", utcTime: "2026-06-24T19:00:00Z" },
+            { home: "Bosnia & Herzegovina", away: "Qatar", group: "E", status: "upcoming", score: "", utcTime: "2026-06-24T19:00:00Z" },
+            { home: "Scotland", away: "Brazil", group: "F", status: "upcoming", score: "", utcTime: "2026-06-24T22:00:00Z" },
+            { home: "Morocco", away: "Haiti", group: "G", status: "upcoming", score: "", utcTime: "2026-06-24T22:00:00Z" },
+            { home: "Czechia", away: "Mexico", group: "A", status: "upcoming", score: "", utcTime: "2026-06-25T01:00:00Z" },
+            { home: "South Africa", away: "South Korea", group: "C", status: "upcoming", score: "", utcTime: "2026-06-25T01:00:00Z" },
+            { home: "Argentina", away: "Egypt", group: "D", status: "upcoming", score: "", utcTime: "2026-06-26T19:00:00Z" },
+            { home: "Germany", away: "Japan", group: "H", status: "upcoming", score: "", utcTime: "2026-06-27T22:00:00Z" }
+        ];
+
+        // 2. Groups A-L Standings
+        const groupsData = {
+            "A": [{team: "Mexico", pts: 3}, {team: "Poland", pts: 0}, {team: "Czechia", pts: 0}, {team: "TBA", pts: 0}],
+            "B": [{team: "USA", pts: 3}, {team: "Wales", pts: 0}, {team: "TBA", pts: 0}, {team: "TBA", pts: 0}],
+            "C": [{team: "Canada", pts: 1}, {team: "South Africa", pts: 1}, {team: "Switzerland", pts: 0}, {team: "South Korea", pts: 0}],
+            "D": [{team: "Argentina", pts: 0}, {team: "Egypt", pts: 0}, {team: "TBA", pts: 0}, {team: "TBA", pts: 0}],
+            "E": [{team: "Bosnia & Herzegovina", pts: 0}, {team: "Qatar", pts: 0}, {team: "TBA", pts: 0}, {team: "TBA", pts: 0}],
+            "F": [{team: "Brazil", pts: 0}, {team: "Scotland", pts: 0}, {team: "TBA", pts: 0}, {team: "TBA", pts: 0}],
+            "G": [{team: "Morocco", pts: 0}, {team: "Haiti", pts: 0}, {team: "TBA", pts: 0}, {team: "TBA", pts: 0}],
+            "H": [{team: "Germany", pts: 0}, {team: "Japan", pts: 0}, {team: "TBA", pts: 0}, {team: "TBA", pts: 0}],
+            "I": [{team: "France", pts: 3}, {team: "Norway", pts: 3}, {team: "Senegal", pts: 0}, {team: "Iraq", pts: 0}],
+            "J": [{team: "Spain", pts: 0}, {team: "Nigeria", pts: 0}, {team: "TBA", pts: 0}, {team: "TBA", pts: 0}],
+            "K": [{team: "Portugal", pts: 3}, {team: "Colombia", pts: 3}, {team: "DR Congo", pts: 0}, {team: "Uzbekistan", pts: 0}],
+            "L": [{team: "Croatia", pts: 3}, {team: "Panama", pts: 0}, {team: "TBA", pts: 0}, {team: "TBA", pts: 0}]
+        };
+
+        // 3. Top Scorers Data
+        const scorers = [
+            { player: "K. Mbappé", team: "France", goals: 2 },
+            { player: "S. Giménez", team: "Mexico", goals: 2 },
+            { player: "C. Pulisic", team: "USA", goals: 1 },
+            { player: "B. Fernandes", team: "Portugal", goals: 1 }
+        ];
+
+        // --- RENDER FUNCTIONS ---
 
         function renderMatches() {
             const tz = document.getElementById("timezone-select").value;
-            const container = document.getElementById("upcoming-container");
-            container.innerHTML = ""; // Clear old matches
+            const upcomingDiv = document.getElementById("upcoming-container");
+            const pastDiv = document.getElementById("past-container");
+            
+            upcomingDiv.innerHTML = ""; pastDiv.innerHTML = "";
 
             matches.forEach(match => {
                 const date = new Date(match.utcTime);
-                
-                // Get 24-hour format
                 const time24 = date.toLocaleTimeString('en-US', { timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: false });
-                // Get 12-hour format
                 const time12 = date.toLocaleTimeString('en-US', { timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: true });
-                // Get Date
                 const day = date.toLocaleDateString('en-US', { timeZone: tz, weekday: 'short', month: 'short', day: 'numeric' });
 
                 const card = document.createElement("div");
-                card.className = "card";
-                card.innerHTML = `
-                    <h3>${match.home} vs. ${match.away}</h3>
-                    <p style="color: #aaaaaa; margin-bottom: 5px;">${day}</p>
-                    <p class="time-24">${time24}</p>
-                    <p class="time-12">${time12}</p>
-                `;
-                container.appendChild(card);
+                card.className = "card " + (match.status === "past" ? "past-card" : "");
+                
+                if(match.status === "past") {
+                    card.innerHTML = `
+                        <h3>${match.home} vs. ${match.away}</h3>
+                        <p style="color: #aaaaaa; margin: 0;">Group ${match.group} • ${day}</p>
+                        <div class="score-display">${match.score}</div>
+                        <p style="color: #aaaaaa; margin: 0;">Full Time</p>
+                    `;
+                    pastDiv.appendChild(card);
+                } else {
+                    card.innerHTML = `
+                        <h3>${match.home} vs. ${match.away}</h3>
+                        <p style="color: #aaaaaa; margin-bottom: 5px;">Group ${match.group} • ${day}</p>
+                        <p class="time-24">${time24}</p>
+                        <p class="time-12">${time12}</p>
+                    `;
+                    upcomingDiv.appendChild(card);
+                }
             });
         }
 
-        // Run once on load to show matches
-        renderMatches();
-
-        // --- COUNTDOWN LOGIC ---
-        // Counting down to the SUI vs CAN match
-        const countDownDate = new Date("2026-06-24T19:00:00Z").getTime();
-
-        const x = setInterval(function() {
-            const now = new Date().getTime();
-            const distance = countDownDate - now;
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            if (distance < 0) {
-                clearInterval(x);
-                document.getElementById("timer").innerHTML = "MATCH HAS STARTED!";
-            } else {
-                document.getElementById("timer").innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
+        function renderGroups() {
+            const container = document.getElementById("groups-container");
+            for (const [groupLetter, teams] of Object.entries(groupsData)) {
+                let tableRows = teams.map(t => `<tr><td>${t.team}</td><td>${t.pts}</td></tr>`).join("");
+                container.innerHTML += `
+                    <div class="group-table">
+                        <h3>Group ${groupLetter}</h3>
+                        <table>
+                            <tr><th>Team</th><th>Pts</th></tr>
+                            ${tableRows}
+                        </table>
+                    </div>
+                `;
             }
+        }
+
+        function renderScorers() {
+            const container = document.getElementById("scorers-container");
+            scorers.forEach(s => {
+                container.innerHTML += `
+                    <div class="scorer-item">
+                        <span>${s.player} <small style="color:#aaaaaa">(${s.team})</small></span>
+                        <span class="goals">${s.goals} Goals</span>
+                    </div>
+                `;
+            });
+        }
+
+        // Run functions to build the page
+        renderMatches();
+        renderGroups();
+        renderScorers();
+
+        // Countdown to the first upcoming match in the list
+        const nextMatchTime = new Date(matches.find(m => m.status === "upcoming").utcTime).getTime();
+        setInterval(function() {
+            const now = new Date().getTime();
+            const distance = nextMatchTime - now;
+            if (distance < 0) {
+                document.getElementById("timer").innerHTML = "MATCH IN PROGRESS!";
+                return;
+            }
+            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById("timer").innerHTML = `${d}d ${h}h ${m}m ${s}s`;
         }, 1000);
     </script>
 </body>
 </html>
-
