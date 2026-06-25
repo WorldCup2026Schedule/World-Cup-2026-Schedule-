@@ -6,279 +6,256 @@
     <title>Ultimate World Cup Hub</title>
     <style>
         /* Sleek Dark Mode */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0b0f19; color: #ffffff; margin: 0; padding: 0; }
         
-        .banner {
-            background-color: #ff2a2a;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            font-weight: bold;
-            letter-spacing: 2px;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-        
-        .banner-text {
-            display: inline-block;
-            animation: scrollBanner 25s linear infinite;
-        }
+        /* Banner */
+        .banner { background-color: #ffcc00; color: #121212; padding: 10px; text-align: center; font-weight: bold; letter-spacing: 2px; white-space: nowrap; overflow: hidden; }
+        .banner-text { display: inline-block; animation: scrollBanner 25s linear infinite; }
+        @keyframes scrollBanner { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        @keyframes scrollBanner {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
+        /* Countdown */
+        .countdown-container { text-align: center; padding: 20px; background: linear-gradient(90deg, #151b2b, #1a2235); border-bottom: 2px solid #2a3655; }
+        #timer { font-size: 2em; color: #00ffcc; font-weight: bold; margin-top: 10px; }
 
-        .countdown-container {
-            text-align: center;
-            padding: 20px;
-            background: linear-gradient(90deg, #1f1f1f, #2a2a2a);
-            border-bottom: 2px solid #333;
-        }
-        
-        #timer {
-            font-size: 2em;
-            color: #00ffcc;
-            font-weight: bold;
-            margin-top: 10px;
-        }
+        /* Tabs */
+        .tabs { display: flex; justify-content: center; background-color: #151b2b; flex-wrap: wrap; }
+        .tab-btn { background-color: inherit; color: white; border: none; outline: none; cursor: pointer; padding: 14px 20px; font-size: 1em; transition: 0.3s; }
+        .tab-btn:hover { background-color: #2a3655; }
+        .tab-btn.active { background-color: #ffcc00; color: #121212; font-weight: bold; border-radius: 5px 5px 0 0; }
+        .tab-content { display: none; padding: 20px; text-align: center; }
+        .tab-content.active { display: block; animation: fadeEffect 0.5s; }
+        @keyframes fadeEffect { from {opacity: 0;} to {opacity: 1;} }
 
-        .tabs {
-            display: flex;
-            justify-content: center;
-            background-color: #1f1f1f;
-            flex-wrap: wrap;
-        }
-        
-        .tab-btn {
-            background-color: inherit;
-            color: white;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 14px 20px;
-            font-size: 1em;
-            transition: 0.3s;
-        }
-        
-        .tab-btn:hover { background-color: #333; }
-        .tab-btn.active {
-            background-color: #00ffcc;
-            color: #121212;
-            font-weight: bold;
-            border-radius: 5px 5px 0 0;
-        }
-
-        .tab-content {
-            display: none;
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .tab-content.active {
-            display: block;
-            animation: fadeEffect 0.5s;
-        }
-
-        @keyframes fadeEffect {
-            from {opacity: 0;}
-            to {opacity: 1;}
-        }
-
-        .card {
-            background-color: #1f1f1f;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 10px auto;
-            max-width: 600px;
-            border-left: 5px solid #00ffcc;
-            text-align: center;
-        }
-
-        .past-card {
-            border-left: 5px solid #ff2a2a;
-        }
-
-        .time-24 { font-size: 1.4em; font-weight: bold; color: #00ffcc; margin: 5px 0 0 0; }
+        /* Cards & Match Lists */
+        .match-list { max-width: 800px; margin: 0 auto; text-align: left; }
+        .card { background-color: #151b2b; border-radius: 8px; padding: 15px; margin: 10px 0; border-left: 5px solid #00ffcc; display: flex; justify-content: space-between; align-items: center;}
+        .past-card { border-left: 5px solid #ff4444; }
+        .match-info { flex-grow: 1; }
+        .match-time { text-align: right; min-width: 120px; }
+        .time-24 { font-size: 1.2em; font-weight: bold; color: #00ffcc; margin: 0; }
         .time-12 { font-size: 0.8em; color: #aaaaaa; margin: 0; }
-        .score-display { font-size: 2em; font-weight: bold; color: #ff2a2a; margin: 10px 0; }
-
-        /* Dropdown Styling */
+        .score-display { font-size: 1.5em; font-weight: bold; color: #ff4444; margin: 0; }
+        
+        /* Timezone Dropdown */
         .tz-controls { margin: 20px auto; text-align: center; }
-        select {
-            padding: 10px; font-size: 1em; background-color: #333;
-            color: white; border: 1px solid #00ffcc; border-radius: 5px; cursor: pointer;
-        }
+        select { padding: 10px; font-size: 1em; background-color: #2a3655; color: white; border: 1px solid #ffcc00; border-radius: 5px; cursor: pointer; }
 
-        /* Group Tables Grid */
-        .groups-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            padding: 20px 0;
-        }
-        .group-table {
-            background-color: #1f1f1f;
-            border-radius: 8px;
-            padding: 15px;
-            border-top: 4px solid #00ffcc;
-        }
-        .group-table h3 { margin-top: 0; color: #00ffcc; }
+        /* Knockout Bracket Grid */
+        .ko-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; text-align: left;}
+        .ko-card { background-color: #1a2235; padding: 12px; border-radius: 5px; border-left: 4px solid #ffcc00; margin-bottom: 10px;}
+        .ko-round-title { color: #ffcc00; font-size: 1.2em; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px;}
+
+        /* Groups & Scorers */
+        .groups-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 20px 0; }
+        .group-table { background-color: #151b2b; border-radius: 8px; padding: 15px; border-top: 4px solid #ffcc00; }
+        .group-table h3 { margin-top: 0; color: #ffcc00; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
-        th, td { padding: 8px; border-bottom: 1px solid #333; }
-        th { color: #aaaaaa; font-size: 0.9em; }
-
-        /* Top Scorers List */
-        .scorer-item {
-            display: flex;
-            justify-content: space-between;
-            background-color: #1f1f1f;
-            padding: 15px;
-            margin: 10px auto;
-            max-width: 500px;
-            border-radius: 8px;
-            border-left: 5px solid #ffaa00;
-            font-size: 1.2em;
-        }
-        .goals { font-weight: bold; color: #ffaa00; }
+        th, td { padding: 8px; border-bottom: 1px solid #2a3655; }
+        .scorer-item { display: flex; justify-content: space-between; background-color: #151b2b; padding: 15px; margin: 10px auto; max-width: 500px; border-radius: 8px; border-left: 5px solid #ffcc00; font-size: 1.2em; }
     </style>
 </head>
 <body>
 
-    <!-- Live Scores Banner -->
     <div class="banner">
-        <div class="banner-text">🔥 LATEST RESULTS: BRA 3-0 SCO | SUI 2-1 CAN | BIH 3-1 QAT | MAR 4-2 HAI 🔥</div>
+        <div class="banner-text">🔥 VINI JR CATCHES MBAPPÉ AND HAALAND IN GOLDEN BOOT RACE! | BRAZIL DOMINATES SCOTLAND 3-0 🔥</div>
     </div>
 
-    <!-- Countdown Timer -->
     <div class="countdown-container">
-        <h2>⏳ Match Clock</h2>
-        <div id="timer">Finding next match...</div>
+        <h2>⏳ Next Kickoff</h2>
+        <div id="timer">Loading...</div>
     </div>
 
-    <!-- The Navigation Tabs -->
     <div class="tabs">
-        <button class="tab-btn active" onclick="openTab(event, 'Schedule')">📅 Upcoming</button>
-        <button class="tab-btn" onclick="openTab(event, 'Past')">✅ Past Results</button>
+        <button class="tab-btn active" onclick="openTab(event, 'Schedule')">📅 Upcoming Matches</button>
+        <button class="tab-btn" onclick="openTab(event, 'Past')">✅ All Past Results</button>
+        <button class="tab-btn" onclick="openTab(event, 'Knockouts')">🏆 Knockout Stage</button>
         <button class="tab-btn" onclick="openTab(event, 'Groups')">📊 Groups A-L</button>
         <button class="tab-btn" onclick="openTab(event, 'Scorers')">⚽ Top Scorers</button>
     </div>
 
-    <!-- Tab 1: Upcoming Matches -->
     <div id="Schedule" class="tab-content active">
-        <h2>Upcoming Fixtures</h2>
+        <h2>Upcoming Group Fixtures</h2>
         <div class="tz-controls">
-            <label for="timezone-select">🌍 Choose Timezone: </label>
+            <label for="timezone-select">🌍 Change Timezone: </label>
             <select id="timezone-select" onchange="renderMatches()"></select>
         </div>
-        <div id="upcoming-container"></div>
+        <div class="match-list" id="upcoming-container"></div>
     </div>
 
-    <!-- Tab 2: Past Results -->
     <div id="Past" class="tab-content">
-        <h2>Latest Results</h2>
-        <div id="past-container"></div>
+        <h2>Full Tournament Results</h2>
+        <div class="match-list" id="past-container"></div>
     </div>
 
-    <!-- Tab 3: Groups -->
+    <div id="Knockouts" class="tab-content">
+        <h2>Road to the Final</h2>
+        <div class="ko-grid">
+            <div>
+                <div class="ko-round-title">Round of 32 (June 28 - July 3)</div>
+                <div class="ko-card"><strong>Sun 28 Jun:</strong> 2nd A vs Canada 🇨🇦</div>
+                <div class="ko-card"><strong>Mon 29 Jun:</strong> Brazil 🇧🇷 vs 2nd F</div>
+                <div class="ko-card"><strong>Mon 29 Jun:</strong> Germany 🇩🇪 vs 3rd A/B/C/D/F</div>
+                <div class="ko-card"><strong>Tue 30 Jun:</strong> Win F vs Morocco 🇲🇦</div>
+                <div class="ko-card"><strong>Tue 30 Jun:</strong> 2nd E vs 2nd I</div>
+                <div class="ko-card"><strong>Wed 1 Jul:</strong> Mexico 🇲🇽 vs 3rd C/E/F/H/I</div>
+                <div class="ko-card"><strong>Thu 2 Jul:</strong> USA 🇺🇸 vs 3rd B/E/F/I/J</div>
+                <div class="ko-card"><strong>Fri 3 Jul:</strong> Switzerland 🇨🇭 vs 3rd E/F/G/I/J</div>
+                <div class="ko-card"><strong>Sat 4 Jul:</strong> Argentina 🇦🇷 vs 2nd H</div>
+            </div>
+            <div>
+                <div class="ko-round-title">Round of 16 (July 4 - July 7)</div>
+                <div class="ko-card"><strong>Sat 4 Jul:</strong> Win M73 vs Win M75</div>
+                <div class="ko-card"><strong>Sun 5 Jul:</strong> Win M74 vs Win M77</div>
+                <div class="ko-card"><strong>Mon 6 Jul:</strong> Win M79 vs Win M80</div>
+                <div class="ko-card"><strong>Tue 7 Jul:</strong> Win M81 vs Win M82</div>
+                
+                <div class="ko-round-title" style="margin-top: 30px;">Quarter Finals (July 9 - July 12)</div>
+                <div class="ko-card"><strong>Thu 9 Jul:</strong> Win M89 vs Win M90 (Boston)</div>
+                <div class="ko-card"><strong>Fri 10 Jul:</strong> Win M93 vs Win M94 (Los Angeles)</div>
+            </div>
+            <div>
+                <div class="ko-round-title">Semi Finals & Final</div>
+                <div class="ko-card"><strong>Tue 14 Jul:</strong> Semi-Final 1 (Dallas)</div>
+                <div class="ko-card"><strong>Wed 15 Jul:</strong> Semi-Final 2 (Atlanta)</div>
+                <div class="ko-card" style="border-left-color: #888;"><strong>Sun 19 Jul:</strong> 3rd Place Match (Miami)</div>
+                <div class="ko-card" style="border-left-color: #00ffcc; background-color: #152b2b;"><strong>Sun 19 Jul: FINAL</strong> (New York/NJ)</div>
+            </div>
+        </div>
+    </div>
+
     <div id="Groups" class="tab-content">
         <h2>Official Group Standings</h2>
         <div class="groups-grid" id="groups-container"></div>
     </div>
 
-    <!-- Tab 4: Top Scorers -->
     <div id="Scorers" class="tab-content">
         <h2>Golden Boot Race</h2>
         <div id="scorers-container"></div>
     </div>
 
     <script>
-        // Tab Switching Logic
         function openTab(evt, tabName) {
             let tabcontent = document.getElementsByClassName("tab-content");
-            for (let i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-                tabcontent[i].classList.remove("active");
-            }
+            for (let i = 0; i < tabcontent.length; i++) { tabcontent[i].style.display = "none"; tabcontent[i].classList.remove("active"); }
             let tablinks = document.getElementsByClassName("tab-btn");
-            for (let i = 0; i < tablinks.length; i++) {
-                tablinks[i].classList.remove("active");
-            }
+            for (let i = 0; i < tablinks.length; i++) { tablinks[i].classList.remove("active"); }
             document.getElementById(tabName).style.display = "block";
             document.getElementById(tabName).classList.add("active");
             evt.currentTarget.classList.add("active");
         }
 
-        // Timezone Magic
         const userTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
         const select = document.getElementById("timezone-select");
         const options = [
             { val: userTZ, text: "📍 My Local Time (" + userTZ.split('/')[1]?.replace('_', ' ') + ")" },
-            { val: "America/Mexico_City", text: "Mexico City (CDMX)" },
             { val: "America/New_York", text: "Eastern Time (EST)" },
+            { val: "America/Chicago", text: "Central Time (CST)" },
             { val: "America/Los_Angeles", text: "Pacific Time (PST)" },
-            { val: "Europe/London", text: "UK Time (GMT)" },
-            { val: "Asia/Tokyo", text: "Japan Time (JST)" }
+            { val: "Europe/London", text: "UK Time (GMT)" }
         ];
-        options.forEach(opt => {
-            let el = document.createElement("option");
-            el.value = opt.val; el.text = opt.text;
-            select.add(el);
-        });
+        options.forEach(opt => { let el = document.createElement("option"); el.value = opt.val; el.text = opt.text; select.add(el); });
 
-        // --- THE MASSIVE LIVE DATA LOAD ---
-
-        // 1. Matches (Past and Upcoming)
+        // THE MASSIVE DATA VAULT (Extracted directly from your screenshots)
         const matches = [
-            // Fresh Past Results
-            { home: "Brazil 🇧🇷", away: "Scotland 🏴󠁧󠁢󠁳󠁣󠁴󠁿", group: "C", status: "past", score: "3 - 0", utcTime: "2026-06-25T01:00:00Z" },
-            { home: "Morocco 🇲🇦", away: "Haiti 🇭🇹", group: "C", status: "past", score: "4 - 2", utcTime: "2026-06-25T01:00:00Z" },
-            { home: "Switzerland 🇨🇭", away: "Canada 🇨🇦", group: "B", status: "past", score: "2 - 1", utcTime: "2026-06-24T22:00:00Z" },
-            { home: "Bosnia & Herzegovina 🇧🇦", away: "Qatar 🇶🇦", group: "B", status: "past", score: "3 - 1", utcTime: "2026-06-24T22:00:00Z" },
-            { home: "Colombia 🇨🇴", away: "DR Congo 🇨🇩", group: "K", status: "past", score: "1 - 0", utcTime: "2026-06-24T05:00:00Z" },
-            { home: "Croatia 🇭🇷", away: "Panama 🇵🇦", group: "L", status: "past", score: "1 - 0", utcTime: "2026-06-24T02:00:00Z" },
-            
-            // Upcoming Matches
-            { home: "South Africa 🇿🇦", away: "South Korea 🇰🇷", group: "A", status: "upcoming", score: "", utcTime: "2026-06-25T01:00:00Z" },
-            { home: "Czechia 🇨🇿", away: "Mexico 🇲🇽", group: "A", status: "upcoming", score: "", utcTime: "2026-06-25T01:00:00Z" },
-            { home: "Curaçao 🇨🇼", away: "Ivory Coast 🇨🇮", group: "E", status: "upcoming", score: "", utcTime: "2026-06-25T20:00:00Z" },
-            { home: "Ecuador 🇪🇨", away: "Germany 🇩🇪", group: "E", status: "upcoming", score: "", utcTime: "2026-06-25T20:00:00Z" },
-            { home: "Tunisia 🇹🇳", away: "Netherlands 🇳🇱", group: "F", status: "upcoming", score: "", utcTime: "2026-06-25T23:00:00Z" },
-            { home: "Japan 🇯🇵", away: "Sweden 🇸🇪", group: "F", status: "upcoming", score: "", utcTime: "2026-06-25T23:00:00Z" }
+            // --- PAST MATCHES (Matchday 1 & 2 & 3) ---
+            { home: "Mexico 🇲🇽", away: "South Africa 🇿🇦", group: "A", status: "past", score: "2 - 0", utcTime: "2026-06-12T01:00:00Z" },
+            { home: "South Korea 🇰🇷", away: "Czechia 🇨🇿", group: "A", status: "past", score: "2 - 1", utcTime: "2026-06-12T08:00:00Z" },
+            { home: "Canada 🇨🇦", away: "Bosnia & Herz. 🇧🇦", group: "B", status: "past", score: "1 - 1", utcTime: "2026-06-13T01:00:00Z" },
+            { home: "USA 🇺🇸", away: "Paraguay 🇵🇾", group: "D", status: "past", score: "4 - 1", utcTime: "2026-06-13T07:00:00Z" },
+            { home: "Qatar 🇶🇦", away: "Switzerland 🇨🇭", group: "B", status: "past", score: "1 - 1", utcTime: "2026-06-14T01:00:00Z" },
+            { home: "Brazil 🇧🇷", away: "Morocco 🇲🇦", group: "C", status: "past", score: "1 - 1", utcTime: "2026-06-14T04:00:00Z" },
+            { home: "Haiti 🇭🇹", away: "Scotland 🏴󠁧󠁢󠁳󠁣󠁴󠁿", group: "C", status: "past", score: "0 - 1", utcTime: "2026-06-14T07:00:00Z" },
+            { home: "Australia 🇦🇺", away: "Turkiye 🇹🇷", group: "D", status: "past", score: "2 - 0", utcTime: "2026-06-14T10:00:00Z" },
+            { home: "Germany 🇩🇪", away: "Curacao 🇨🇼", group: "E", status: "past", score: "7 - 1", utcTime: "2026-06-14T23:00:00Z" },
+            { home: "Netherlands 🇳🇱", away: "Japan 🇯🇵", group: "F", status: "past", score: "2 - 2", utcTime: "2026-06-15T02:00:00Z" },
+            { home: "Ivory Coast 🇨🇮", away: "Ecuador 🇪🇨", group: "E", status: "past", score: "1 - 0", utcTime: "2026-06-15T05:00:00Z" },
+            { home: "Sweden 🇸🇪", away: "Tunisia 🇹🇳", group: "F", status: "past", score: "5 - 1", utcTime: "2026-06-15T08:00:00Z" },
+            { home: "Spain 🇪🇸", away: "Cape Verde 🇨🇻", group: "H", status: "past", score: "0 - 0", utcTime: "2026-06-15T22:00:00Z" },
+            { home: "Belgium 🇧🇪", away: "Egypt 🇪🇬", group: "G", status: "past", score: "1 - 1", utcTime: "2026-06-16T01:00:00Z" },
+            { home: "Saudi Arabia 🇸🇦", away: "Uruguay 🇺🇾", group: "H", status: "past", score: "1 - 1", utcTime: "2026-06-16T04:00:00Z" },
+            { home: "Iran 🇮🇷", away: "New Zealand 🇳🇿", group: "G", status: "past", score: "2 - 2", utcTime: "2026-06-16T07:00:00Z" },
+            { home: "France 🇫🇷", away: "Senegal 🇸🇳", group: "I", status: "past", score: "3 - 1", utcTime: "2026-06-17T01:00:00Z" },
+            { home: "Iraq 🇮🇶", away: "Norway 🇳🇴", group: "I", status: "past", score: "1 - 4", utcTime: "2026-06-17T04:00:00Z" },
+            { home: "Argentina 🇦🇷", away: "Algeria 🇩🇿", group: "J", status: "past", score: "3 - 0", utcTime: "2026-06-17T07:00:00Z" },
+            { home: "Austria 🇦🇹", away: "Jordan 🇯🇴", group: "J", status: "past", score: "3 - 1", utcTime: "2026-06-17T10:00:00Z" },
+            { home: "Portugal 🇵🇹", away: "Congo DR 🇨🇩", group: "K", status: "past", score: "1 - 1", utcTime: "2026-06-17T23:00:00Z" },
+            { home: "England 🏴󠁧󠁢󠁥󠁮󠁧󠁿", away: "Croatia 🇭🇷", group: "L", status: "past", score: "4 - 2", utcTime: "2026-06-18T02:00:00Z" },
+            { home: "Ghana 🇬🇭", away: "Panama 🇵🇦", group: "L", status: "past", score: "1 - 0", utcTime: "2026-06-18T05:00:00Z" },
+            { home: "Uzbekistan 🇺🇿", away: "Colombia 🇨🇴", group: "K", status: "past", score: "1 - 3", utcTime: "2026-06-18T08:00:00Z" },
+            { home: "Czechia 🇨🇿", away: "South Africa 🇿🇦", group: "A", status: "past", score: "1 - 1", utcTime: "2026-06-18T22:00:00Z" },
+            { home: "Switzerland 🇨🇭", away: "Bosnia 🇧🇦", group: "B", status: "past", score: "4 - 1", utcTime: "2026-06-19T01:00:00Z" },
+            { home: "Canada 🇨🇦", away: "Qatar 🇶🇦", group: "B", status: "past", score: "6 - 0", utcTime: "2026-06-19T04:00:00Z" },
+            { home: "Mexico 🇲🇽", away: "South Korea 🇰🇷", group: "A", status: "past", score: "1 - 0", utcTime: "2026-06-19T07:00:00Z" },
+            { home: "USA 🇺🇸", away: "Australia 🇦🇺", group: "D", status: "past", score: "2 - 0", utcTime: "2026-06-20T01:00:00Z" },
+            { home: "Scotland 🏴󠁧󠁢󠁳󠁣󠁴󠁿", away: "Morocco 🇲🇦", group: "C", status: "past", score: "0 - 1", utcTime: "2026-06-20T04:00:00Z" },
+            { home: "Brazil 🇧🇷", away: "Haiti 🇭🇹", group: "C", status: "past", score: "3 - 0", utcTime: "2026-06-20T06:30:00Z" },
+            { home: "Turkiye 🇹🇷", away: "Paraguay 🇵🇾", group: "D", status: "past", score: "0 - 1", utcTime: "2026-06-20T09:00:00Z" },
+            { home: "Netherlands 🇳🇱", away: "Sweden 🇸🇪", group: "F", status: "past", score: "5 - 1", utcTime: "2026-06-20T23:00:00Z" },
+            { home: "Germany 🇩🇪", away: "Ivory Coast 🇨🇮", group: "E", status: "past", score: "2 - 1", utcTime: "2026-06-21T02:00:00Z" },
+            { home: "Ecuador 🇪🇨", away: "Curacao 🇨🇼", group: "E", status: "past", score: "0 - 0", utcTime: "2026-06-21T06:00:00Z" },
+            { home: "Tunisia 🇹🇳", away: "Japan 🇯🇵", group: "F", status: "past", score: "0 - 4", utcTime: "2026-06-21T10:00:00Z" },
+            { home: "Spain 🇪🇸", away: "Saudi Arabia 🇸🇦", group: "H", status: "past", score: "4 - 0", utcTime: "2026-06-21T22:00:00Z" },
+            { home: "Belgium 🇧🇪", away: "Iran 🇮🇷", group: "G", status: "past", score: "0 - 0", utcTime: "2026-06-22T01:00:00Z" },
+            { home: "Uruguay 🇺🇾", away: "Cape Verde 🇨🇻", group: "H", status: "past", score: "2 - 2", utcTime: "2026-06-22T04:00:00Z" },
+            { home: "New Zealand 🇳🇿", away: "Egypt 🇪🇬", group: "G", status: "past", score: "1 - 3", utcTime: "2026-06-22T07:00:00Z" },
+            { home: "Argentina 🇦🇷", away: "Austria 🇦🇹", group: "J", status: "past", score: "2 - 0", utcTime: "2026-06-22T23:00:00Z" },
+            { home: "France 🇫🇷", away: "Iraq 🇮🇶", group: "I", status: "past", score: "3 - 0", utcTime: "2026-06-23T03:00:00Z" },
+            { home: "Norway 🇳🇴", away: "Senegal 🇸🇳", group: "I", status: "past", score: "3 - 2", utcTime: "2026-06-23T06:00:00Z" },
+            { home: "Jordan 🇯🇴", away: "Algeria 🇩🇿", group: "J", status: "past", score: "1 - 2", utcTime: "2026-06-23T09:00:00Z" },
+            { home: "Portugal 🇵🇹", away: "Uzbekistan 🇺🇿", group: "K", status: "past", score: "5 - 0", utcTime: "2026-06-23T23:00:00Z" },
+            { home: "England 🏴󠁧󠁢󠁥󠁮󠁧󠁿", away: "Ghana 🇬🇭", group: "L", status: "past", score: "0 - 0", utcTime: "2026-06-24T02:00:00Z" },
+            { home: "Panama 🇵🇦", away: "Croatia 🇭🇷", group: "L", status: "past", score: "0 - 1", utcTime: "2026-06-24T05:00:00Z" },
+            { home: "Colombia 🇨🇴", away: "Congo DR 🇨🇩", group: "K", status: "past", score: "1 - 0", utcTime: "2026-06-24T08:00:00Z" },
+            { home: "Switzerland 🇨🇭", away: "Canada 🇨🇦", group: "B", status: "past", score: "2 - 1", utcTime: "2026-06-25T01:00:00Z" },
+            { home: "Bosnia 🇧🇦", away: "Qatar 🇶🇦", group: "B", status: "past", score: "3 - 1", utcTime: "2026-06-25T01:00:00Z" },
+            { home: "Scotland 🏴󠁧󠁢󠁳󠁣󠁴󠁿", away: "Brazil 🇧🇷", group: "C", status: "past", score: "0 - 3", utcTime: "2026-06-25T04:00:00Z" },
+            { home: "Morocco 🇲🇦", away: "Haiti 🇭🇹", group: "C", status: "past", score: "4 - 2", utcTime: "2026-06-25T04:00:00Z" },
+
+            // --- UPCOMING MATCHES (June 25 onwards) ---
+            { home: "Czechia 🇨🇿", away: "Mexico 🇲🇽", group: "A", status: "upcoming", score: "", utcTime: "2026-06-25T07:00:00Z" },
+            { home: "South Africa 🇿🇦", away: "South Korea 🇰🇷", group: "A", status: "upcoming", score: "", utcTime: "2026-06-25T07:00:00Z" },
+            { home: "Curacao 🇨🇼", away: "Ivory Coast 🇨🇮", group: "E", status: "upcoming", score: "", utcTime: "2026-06-26T02:00:00Z" },
+            { home: "Ecuador 🇪🇨", away: "Germany 🇩🇪", group: "E", status: "upcoming", score: "", utcTime: "2026-06-26T02:00:00Z" },
+            { home: "Japan 🇯🇵", away: "Sweden 🇸🇪", group: "F", status: "upcoming", score: "", utcTime: "2026-06-26T05:00:00Z" },
+            { home: "Tunisia 🇹🇳", away: "Netherlands 🇳🇱", group: "F", status: "upcoming", score: "", utcTime: "2026-06-26T05:00:00Z" },
+            { home: "Turkiye 🇹🇷", away: "USA 🇺🇸", group: "D", status: "upcoming", score: "", utcTime: "2026-06-26T08:00:00Z" },
+            { home: "Paraguay 🇵🇾", away: "Australia 🇦🇺", group: "D", status: "upcoming", score: "", utcTime: "2026-06-26T08:00:00Z" },
+            { home: "Norway 🇳🇴", away: "France 🇫🇷", group: "I", status: "upcoming", score: "", utcTime: "2026-06-27T01:00:00Z" },
+            { home: "Senegal 🇸🇳", away: "Iraq 🇮🇶", group: "I", status: "upcoming", score: "", utcTime: "2026-06-27T01:00:00Z" },
+            { home: "Cape Verde 🇨🇻", away: "Saudi Arabia 🇸🇦", group: "H", status: "upcoming", score: "", utcTime: "2026-06-27T06:00:00Z" },
+            { home: "Uruguay 🇺🇾", away: "Spain 🇪🇸", group: "H", status: "upcoming", score: "", utcTime: "2026-06-27T06:00:00Z" },
+            { home: "Egypt 🇪🇬", away: "Iran 🇮🇷", group: "G", status: "upcoming", score: "", utcTime: "2026-06-27T09:00:00Z" },
+            { home: "New Zealand 🇳🇿", away: "Belgium 🇧🇪", group: "G", status: "upcoming", score: "", utcTime: "2026-06-27T09:00:00Z" },
+            { home: "Panama 🇵🇦", away: "England 🏴󠁧󠁢󠁥󠁮󠁧󠁿", group: "L", status: "upcoming", score: "", utcTime: "2026-06-28T03:00:00Z" },
+            { home: "Croatia 🇭🇷", away: "Ghana 🇬🇭", group: "L", status: "upcoming", score: "", utcTime: "2026-06-28T03:00:00Z" },
+            { home: "Colombia 🇨🇴", away: "Portugal 🇵🇹", group: "K", status: "upcoming", score: "", utcTime: "2026-06-28T05:30:00Z" },
+            { home: "Congo DR 🇨🇩", away: "Uzbekistan 🇺🇿", group: "K", status: "upcoming", score: "", utcTime: "2026-06-28T05:30:00Z" },
+            { home: "Jordan 🇯🇴", away: "Argentina 🇦🇷", group: "J", status: "upcoming", score: "", utcTime: "2026-06-28T08:00:00Z" },
+            { home: "Algeria 🇩🇿", away: "Austria 🇦🇹", group: "J", status: "upcoming", score: "", utcTime: "2026-06-28T08:00:00Z" }
         ];
 
-        // 2. Exact Groups Data (Fully Loaded!)
         const groupsData = {
             "A": [{team: "Mexico 🇲🇽", pts: 6}, {team: "South Korea 🇰🇷", pts: 3}, {team: "Czechia 🇨🇿", pts: 1}, {team: "South Africa 🇿🇦", pts: 1}],
-            "B": [{team: "Switzerland 🇨🇭", pts: 7}, {team: "Canada 🇨🇦", pts: 4}, {team: "Bosnia & Herzegovina 🇧🇦", pts: 4}, {team: "Qatar 🇶🇦", pts: 1}],
+            "B": [{team: "Switzerland 🇨🇭", pts: 7}, {team: "Canada 🇨🇦", pts: 4}, {team: "Bosnia & Herz. 🇧🇦", pts: 4}, {team: "Qatar 🇶🇦", pts: 1}],
             "C": [{team: "Brazil 🇧🇷", pts: 7}, {team: "Morocco 🇲🇦", pts: 7}, {team: "Scotland 🏴󠁧󠁢󠁳󠁣󠁴󠁿", pts: 3}, {team: "Haiti 🇭🇹", pts: 0}],
-            "D": [{team: "USA 🇺🇸", pts: 6}, {team: "Australia 🇦🇺", pts: 3}, {team: "Paraguay 🇵🇾", pts: 3}, {team: "Türkiye 🇹🇷", pts: 0}],
-            "E": [{team: "Germany 🇩🇪", pts: 6}, {team: "Ivory Coast 🇨🇮", pts: 3}, {team: "Ecuador 🇪🇨", pts: 1}, {team: "Curaçao 🇨🇼", pts: 1}],
+            "D": [{team: "USA 🇺🇸", pts: 6}, {team: "Australia 🇦🇺", pts: 3}, {team: "Paraguay 🇵🇾", pts: 3}, {team: "Turkiye 🇹🇷", pts: 0}],
+            "E": [{team: "Germany 🇩🇪", pts: 6}, {team: "Ivory Coast 🇨🇮", pts: 3}, {team: "Ecuador 🇪🇨", pts: 1}, {team: "Curacao 🇨🇼", pts: 1}],
             "F": [{team: "Netherlands 🇳🇱", pts: 4}, {team: "Japan 🇯🇵", pts: 4}, {team: "Sweden 🇸🇪", pts: 3}, {team: "Tunisia 🇹🇳", pts: 0}],
             "G": [{team: "Egypt 🇪🇬", pts: 4}, {team: "Iran 🇮🇷", pts: 2}, {team: "Belgium 🇧🇪", pts: 2}, {team: "New Zealand 🇳🇿", pts: 1}],
-            "H": [{team: "Spain 🇪🇸", pts: 4}, {team: "Uruguay 🇺🇾", pts: 2}, {team: "Cabo Verde 🇨🇻", pts: 2}, {team: "Saudi Arabia 🇸🇦", pts: 1}],
+            "H": [{team: "Spain 🇪🇸", pts: 4}, {team: "Uruguay 🇺🇾", pts: 2}, {team: "Cape Verde 🇨🇻", pts: 2}, {team: "Saudi Arabia 🇸🇦", pts: 1}],
             "I": [{team: "France 🇫🇷", pts: 6}, {team: "Norway 🇳🇴", pts: 6}, {team: "Senegal 🇸🇳", pts: 0}, {team: "Iraq 🇮🇶", pts: 0}],
             "J": [{team: "Argentina 🇦🇷", pts: 6}, {team: "Austria 🇦🇹", pts: 3}, {team: "Algeria 🇩🇿", pts: 3}, {team: "Jordan 🇯🇴", pts: 0}],
-            "K": [{team: "Colombia 🇨🇴", pts: 6}, {team: "Portugal 🇵🇹", pts: 4}, {team: "DR Congo 🇨🇩", pts: 1}, {team: "Uzbekistan 🇺🇿", pts: 0}],
+            "K": [{team: "Colombia 🇨🇴", pts: 6}, {team: "Portugal 🇵🇹", pts: 4}, {team: "Congo DR 🇨🇩", pts: 1}, {team: "Uzbekistan 🇺🇿", pts: 0}],
             "L": [{team: "England 🏴󠁧󠁢󠁥󠁮󠁧󠁿", pts: 4}, {team: "Ghana 🇬🇭", pts: 4}, {team: "Croatia 🇭🇷", pts: 3}, {team: "Panama 🇵🇦", pts: 0}]
         };
 
-        // 3. Top Scorers Data
         const scorers = [
             { player: "Lionel Messi", team: "Argentina 🇦🇷", goals: 5 },
+            { player: "Vinícius Júnior", team: "Brazil 🇧🇷", goals: 4 },
             { player: "Kylian Mbappé", team: "France 🇫🇷", goals: 4 },
             { player: "Erling Haaland", team: "Norway 🇳🇴", goals: 4 },
-            { player: "Vinícius Júnior", team: "Brazil 🇧🇷", goals: 2 },
             { player: "S. Giménez", team: "Mexico 🇲🇽", goals: 2 }
         ];
-
-        // --- RENDER FUNCTIONS ---
 
         function renderMatches() {
             const tz = document.getElementById("timezone-select").value;
@@ -298,18 +275,27 @@
                 
                 if(match.status === "past") {
                     card.innerHTML = `
-                        <h3>${match.home} vs. ${match.away}</h3>
-                        <p style="color: #aaaaaa; margin: 0;">Group ${match.group} • ${day}</p>
-                        <div class="score-display">${match.score}</div>
-                        <p style="color: #aaaaaa; margin: 0;">Full Time</p>
+                        <div class="match-info">
+                            <h3>${match.home} vs. ${match.away}</h3>
+                            <p style="color: #aaaaaa; margin: 0;">Group ${match.group} • ${day}</p>
+                        </div>
+                        <div class="match-time">
+                            <div class="score-display">${match.score}</div>
+                            <p style="color: #aaaaaa; margin: 0; font-size: 0.8em;">FT</p>
+                        </div>
                     `;
-                    pastDiv.appendChild(card);
+                    // Prepend so latest matches appear at top of past list
+                    pastDiv.prepend(card);
                 } else {
                     card.innerHTML = `
-                        <h3>${match.home} vs. ${match.away}</h3>
-                        <p style="color: #aaaaaa; margin-bottom: 5px;">Group ${match.group} • ${day}</p>
-                        <p class="time-24">${time24}</p>
-                        <p class="time-12">${time12}</p>
+                        <div class="match-info">
+                            <h3>${match.home} vs. ${match.away}</h3>
+                            <p style="color: #aaaaaa; margin: 0;">Group ${match.group} • ${day}</p>
+                        </div>
+                        <div class="match-time">
+                            <p class="time-24">${time24}</p>
+                            <p class="time-12">${time12}</p>
+                        </div>
                     `;
                     upcomingDiv.appendChild(card);
                 }
@@ -318,64 +304,37 @@
 
         function renderGroups() {
             const container = document.getElementById("groups-container");
-            container.innerHTML = ""; // Clear old contents
+            container.innerHTML = "";
             for (const [groupLetter, teams] of Object.entries(groupsData)) {
                 let tableRows = teams.map(t => `<tr><td>${t.team}</td><td>${t.pts}</td></tr>`).join("");
-                container.innerHTML += `
-                    <div class="group-table">
-                        <h3>Group ${groupLetter}</h3>
-                        <table>
-                            <tr><th>Team</th><th>Pts</th></tr>
-                            ${tableRows}
-                        </table>
-                    </div>
-                `;
+                container.innerHTML += `<div class="group-table"><h3>Group ${groupLetter}</h3><table><tr><th>Team</th><th>Pts</th></tr>${tableRows}</table></div>`;
             }
         }
 
         function renderScorers() {
             const container = document.getElementById("scorers-container");
-            container.innerHTML = ""; // Clear old contents
+            container.innerHTML = "";
             scorers.forEach(s => {
-                container.innerHTML += `
-                    <div class="scorer-item">
-                        <span>${s.player} <small style="color:#aaaaaa">(${s.team})</small></span>
-                        <span class="goals">${s.goals} Goals</span>
-                    </div>
-                `;
+                container.innerHTML += `<div class="scorer-item"><span>${s.player} <small style="color:#aaaaaa">(${s.team})</small></span><span style="font-weight: bold; color: #ffcc00;">${s.goals} Goals</span></div>`;
             });
         }
 
-        // Run functions to build the page
         renderMatches();
         renderGroups();
         renderScorers();
 
-        // --- THE AUTO-UPDATING TIMER ---
         function updateTimer() {
             const nextMatch = matches.find(m => m.status === "upcoming");
-            
-            if (!nextMatch) {
-                document.getElementById("timer").innerHTML = "GROUP STAGE COMPLETE!";
-                return;
-            }
-
-            const nextMatchTime = new Date(nextMatch.utcTime).getTime();
-            const now = new Date().getTime();
-            const distance = nextMatchTime - now;
-
-            if (distance < 0) {
-                document.getElementById("timer").innerHTML = "MATCH IN PROGRESS!";
-            } else {
+            if (!nextMatch) { document.getElementById("timer").innerHTML = "GROUP STAGE COMPLETE!"; return; }
+            const distance = new Date(nextMatch.utcTime).getTime() - new Date().getTime();
+            if (distance < 0) { document.getElementById("timer").innerHTML = "MATCH IN PROGRESS!"; } else {
                 const d = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const s = Math.floor((distance % (1000 * 60)) / 1000);
-                document.getElementById("timer").innerHTML = `Next Kickoff: ${d}d ${h}h ${m}m ${s}s`;
+                document.getElementById("timer").innerHTML = `Next Match: ${d}d ${h}h ${m}m ${s}s`;
             }
         }
-        
-        // Start the clock!
         setInterval(updateTimer, 1000);
         updateTimer();
     </script>
