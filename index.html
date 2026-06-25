@@ -27,7 +27,7 @@
         
         .banner-text {
             display: inline-block;
-            animation: scrollBanner 20s linear infinite;
+            animation: scrollBanner 25s linear infinite;
         }
 
         @keyframes scrollBanner {
@@ -119,7 +119,7 @@
         /* Group Tables Grid */
         .groups-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
             padding: 20px 0;
         }
@@ -153,13 +153,13 @@
 
     <!-- Live Scores Banner -->
     <div class="banner">
-        <div class="banner-text">🔥 WELCOME TO THE ULTIMATE 2026 WORLD CUP TRACKER - 48 TEAMS, 104 MATCHES, 1 CHAMPION 🔥</div>
+        <div class="banner-text">🔥 LATEST RESULTS: BRA 3-0 SCO | SUI 2-1 CAN | BIH 3-1 QAT | MAR 4-2 HAI 🔥</div>
     </div>
 
     <!-- Countdown Timer -->
     <div class="countdown-container">
-        <h2>⏳ Next Match Kickoff</h2>
-        <div id="timer">Loading...</div>
+        <h2>⏳ Match Clock</h2>
+        <div id="timer">Finding next match...</div>
     </div>
 
     <!-- The Navigation Tabs -->
@@ -168,12 +168,11 @@
         <button class="tab-btn" onclick="openTab(event, 'Past')">✅ Past Results</button>
         <button class="tab-btn" onclick="openTab(event, 'Groups')">📊 Groups A-L</button>
         <button class="tab-btn" onclick="openTab(event, 'Scorers')">⚽ Top Scorers</button>
-        <button class="tab-btn" onclick="openTab(event, 'Knockouts')">🏆 Knockouts</button>
     </div>
 
     <!-- Tab 1: Upcoming Matches -->
     <div id="Schedule" class="tab-content active">
-        <h2>Remaining Group Stage Showdowns</h2>
+        <h2>Upcoming Fixtures</h2>
         <div class="tz-controls">
             <label for="timezone-select">🌍 Choose Timezone: </label>
             <select id="timezone-select" onchange="renderMatches()"></select>
@@ -183,13 +182,13 @@
 
     <!-- Tab 2: Past Results -->
     <div id="Past" class="tab-content">
-        <h2>All Results (Since June 11)</h2>
+        <h2>Latest Results</h2>
         <div id="past-container"></div>
     </div>
 
     <!-- Tab 3: Groups -->
     <div id="Groups" class="tab-content">
-        <h2>Group Stage Standings</h2>
+        <h2>Official Group Standings</h2>
         <div class="groups-grid" id="groups-container"></div>
     </div>
 
@@ -197,12 +196,6 @@
     <div id="Scorers" class="tab-content">
         <h2>Golden Boot Race</h2>
         <div id="scorers-container"></div>
-    </div>
-
-    <!-- Tab 5: Knockouts -->
-    <div id="Knockouts" class="tab-content">
-        <h2>Knockout Bracket</h2>
-        <p>Awaiting final 32 teams from the Group Stage...</p>
     </div>
 
     <script>
@@ -239,52 +232,50 @@
             select.add(el);
         });
 
-        // --- MASTER DATA LISTS ---
+        // --- THE MASSIVE LIVE DATA LOAD ---
 
-        // 1. All Matches (You can keep adding to this list!)
+        // 1. Matches (Past and Upcoming)
         const matches = [
-            // Opening Matches (June 11 & 12)
-            { home: "Mexico", away: "Poland", group: "A", status: "past", score: "2 - 1", utcTime: "2026-06-11T20:00:00Z" },
-            { home: "USA", away: "Wales", group: "B", status: "past", score: "3 - 0", utcTime: "2026-06-12T19:00:00Z" },
-            { home: "Canada", away: "South Africa", group: "C", status: "past", score: "1 - 1", utcTime: "2026-06-12T22:00:00Z" },
+            // Fresh Past Results
+            { home: "Brazil 🇧🇷", away: "Scotland 🏴󠁧󠁢󠁳󠁣󠁴󠁿", group: "C", status: "past", score: "3 - 0", utcTime: "2026-06-25T01:00:00Z" },
+            { home: "Morocco 🇲🇦", away: "Haiti 🇭🇹", group: "C", status: "past", score: "4 - 2", utcTime: "2026-06-25T01:00:00Z" },
+            { home: "Switzerland 🇨🇭", away: "Canada 🇨🇦", group: "B", status: "past", score: "2 - 1", utcTime: "2026-06-24T22:00:00Z" },
+            { home: "Bosnia & Herzegovina 🇧🇦", away: "Qatar 🇶🇦", group: "B", status: "past", score: "3 - 1", utcTime: "2026-06-24T22:00:00Z" },
+            { home: "Colombia 🇨🇴", away: "DR Congo 🇨🇩", group: "K", status: "past", score: "1 - 0", utcTime: "2026-06-24T05:00:00Z" },
+            { home: "Croatia 🇭🇷", away: "Panama 🇵🇦", group: "L", status: "past", score: "1 - 0", utcTime: "2026-06-24T02:00:00Z" },
             
-            // Recent Past Matches
-            { home: "Colombia", away: "DR Congo", group: "K", status: "past", score: "1 - 0", utcTime: "2026-06-23T16:00:00Z" },
-            { home: "France", away: "Iraq", group: "I", status: "past", score: "3 - 0", utcTime: "2026-06-23T19:00:00Z" },
-            
-            // Upcoming Matches (June 24+ until knockouts)
-            { home: "Switzerland", away: "Canada", group: "C", status: "upcoming", score: "", utcTime: "2026-06-24T19:00:00Z" },
-            { home: "Bosnia & Herzegovina", away: "Qatar", group: "E", status: "upcoming", score: "", utcTime: "2026-06-24T19:00:00Z" },
-            { home: "Scotland", away: "Brazil", group: "F", status: "upcoming", score: "", utcTime: "2026-06-24T22:00:00Z" },
-            { home: "Morocco", away: "Haiti", group: "G", status: "upcoming", score: "", utcTime: "2026-06-24T22:00:00Z" },
-            { home: "Czechia", away: "Mexico", group: "A", status: "upcoming", score: "", utcTime: "2026-06-25T01:00:00Z" },
-            { home: "South Africa", away: "South Korea", group: "C", status: "upcoming", score: "", utcTime: "2026-06-25T01:00:00Z" },
-            { home: "Argentina", away: "Egypt", group: "D", status: "upcoming", score: "", utcTime: "2026-06-26T19:00:00Z" },
-            { home: "Germany", away: "Japan", group: "H", status: "upcoming", score: "", utcTime: "2026-06-27T22:00:00Z" }
+            // Upcoming Matches
+            { home: "South Africa 🇿🇦", away: "South Korea 🇰🇷", group: "A", status: "upcoming", score: "", utcTime: "2026-06-25T01:00:00Z" },
+            { home: "Czechia 🇨🇿", away: "Mexico 🇲🇽", group: "A", status: "upcoming", score: "", utcTime: "2026-06-25T01:00:00Z" },
+            { home: "Curaçao 🇨🇼", away: "Ivory Coast 🇨🇮", group: "E", status: "upcoming", score: "", utcTime: "2026-06-25T20:00:00Z" },
+            { home: "Ecuador 🇪🇨", away: "Germany 🇩🇪", group: "E", status: "upcoming", score: "", utcTime: "2026-06-25T20:00:00Z" },
+            { home: "Tunisia 🇹🇳", away: "Netherlands 🇳🇱", group: "F", status: "upcoming", score: "", utcTime: "2026-06-25T23:00:00Z" },
+            { home: "Japan 🇯🇵", away: "Sweden 🇸🇪", group: "F", status: "upcoming", score: "", utcTime: "2026-06-25T23:00:00Z" }
         ];
 
-        // 2. Groups A-L Standings
+        // 2. Exact Groups Data (Fully Loaded!)
         const groupsData = {
-            "A": [{team: "Mexico", pts: 3}, {team: "Poland", pts: 0}, {team: "Czechia", pts: 0}, {team: "TBA", pts: 0}],
-            "B": [{team: "USA", pts: 3}, {team: "Wales", pts: 0}, {team: "TBA", pts: 0}, {team: "TBA", pts: 0}],
-            "C": [{team: "Canada", pts: 1}, {team: "South Africa", pts: 1}, {team: "Switzerland", pts: 0}, {team: "South Korea", pts: 0}],
-            "D": [{team: "Argentina", pts: 0}, {team: "Egypt", pts: 0}, {team: "TBA", pts: 0}, {team: "TBA", pts: 0}],
-            "E": [{team: "Bosnia & Herzegovina", pts: 0}, {team: "Qatar", pts: 0}, {team: "TBA", pts: 0}, {team: "TBA", pts: 0}],
-            "F": [{team: "Brazil", pts: 0}, {team: "Scotland", pts: 0}, {team: "TBA", pts: 0}, {team: "TBA", pts: 0}],
-            "G": [{team: "Morocco", pts: 0}, {team: "Haiti", pts: 0}, {team: "TBA", pts: 0}, {team: "TBA", pts: 0}],
-            "H": [{team: "Germany", pts: 0}, {team: "Japan", pts: 0}, {team: "TBA", pts: 0}, {team: "TBA", pts: 0}],
-            "I": [{team: "France", pts: 3}, {team: "Norway", pts: 3}, {team: "Senegal", pts: 0}, {team: "Iraq", pts: 0}],
-            "J": [{team: "Spain", pts: 0}, {team: "Nigeria", pts: 0}, {team: "TBA", pts: 0}, {team: "TBA", pts: 0}],
-            "K": [{team: "Portugal", pts: 3}, {team: "Colombia", pts: 3}, {team: "DR Congo", pts: 0}, {team: "Uzbekistan", pts: 0}],
-            "L": [{team: "Croatia", pts: 3}, {team: "Panama", pts: 0}, {team: "TBA", pts: 0}, {team: "TBA", pts: 0}]
+            "A": [{team: "Mexico 🇲🇽", pts: 6}, {team: "South Korea 🇰🇷", pts: 3}, {team: "Czechia 🇨🇿", pts: 1}, {team: "South Africa 🇿🇦", pts: 1}],
+            "B": [{team: "Switzerland 🇨🇭", pts: 7}, {team: "Canada 🇨🇦", pts: 4}, {team: "Bosnia & Herzegovina 🇧🇦", pts: 4}, {team: "Qatar 🇶🇦", pts: 1}],
+            "C": [{team: "Brazil 🇧🇷", pts: 7}, {team: "Morocco 🇲🇦", pts: 7}, {team: "Scotland 🏴󠁧󠁢󠁳󠁣󠁴󠁿", pts: 3}, {team: "Haiti 🇭🇹", pts: 0}],
+            "D": [{team: "USA 🇺🇸", pts: 6}, {team: "Australia 🇦🇺", pts: 3}, {team: "Paraguay 🇵🇾", pts: 3}, {team: "Türkiye 🇹🇷", pts: 0}],
+            "E": [{team: "Germany 🇩🇪", pts: 6}, {team: "Ivory Coast 🇨🇮", pts: 3}, {team: "Ecuador 🇪🇨", pts: 1}, {team: "Curaçao 🇨🇼", pts: 1}],
+            "F": [{team: "Netherlands 🇳🇱", pts: 4}, {team: "Japan 🇯🇵", pts: 4}, {team: "Sweden 🇸🇪", pts: 3}, {team: "Tunisia 🇹🇳", pts: 0}],
+            "G": [{team: "Egypt 🇪🇬", pts: 4}, {team: "Iran 🇮🇷", pts: 2}, {team: "Belgium 🇧🇪", pts: 2}, {team: "New Zealand 🇳🇿", pts: 1}],
+            "H": [{team: "Spain 🇪🇸", pts: 4}, {team: "Uruguay 🇺🇾", pts: 2}, {team: "Cabo Verde 🇨🇻", pts: 2}, {team: "Saudi Arabia 🇸🇦", pts: 1}],
+            "I": [{team: "France 🇫🇷", pts: 6}, {team: "Norway 🇳🇴", pts: 6}, {team: "Senegal 🇸🇳", pts: 0}, {team: "Iraq 🇮🇶", pts: 0}],
+            "J": [{team: "Argentina 🇦🇷", pts: 6}, {team: "Austria 🇦🇹", pts: 3}, {team: "Algeria 🇩🇿", pts: 3}, {team: "Jordan 🇯🇴", pts: 0}],
+            "K": [{team: "Colombia 🇨🇴", pts: 6}, {team: "Portugal 🇵🇹", pts: 4}, {team: "DR Congo 🇨🇩", pts: 1}, {team: "Uzbekistan 🇺🇿", pts: 0}],
+            "L": [{team: "England 🏴󠁧󠁢󠁥󠁮󠁧󠁿", pts: 4}, {team: "Ghana 🇬🇭", pts: 4}, {team: "Croatia 🇭🇷", pts: 3}, {team: "Panama 🇵🇦", pts: 0}]
         };
 
         // 3. Top Scorers Data
         const scorers = [
-            { player: "K. Mbappé", team: "France", goals: 2 },
-            { player: "S. Giménez", team: "Mexico", goals: 2 },
-            { player: "C. Pulisic", team: "USA", goals: 1 },
-            { player: "B. Fernandes", team: "Portugal", goals: 1 }
+            { player: "Lionel Messi", team: "Argentina 🇦🇷", goals: 5 },
+            { player: "Kylian Mbappé", team: "France 🇫🇷", goals: 4 },
+            { player: "Erling Haaland", team: "Norway 🇳🇴", goals: 4 },
+            { player: "Vinícius Júnior", team: "Brazil 🇧🇷", goals: 2 },
+            { player: "S. Giménez", team: "Mexico 🇲🇽", goals: 2 }
         ];
 
         // --- RENDER FUNCTIONS ---
@@ -327,6 +318,7 @@
 
         function renderGroups() {
             const container = document.getElementById("groups-container");
+            container.innerHTML = ""; // Clear old contents
             for (const [groupLetter, teams] of Object.entries(groupsData)) {
                 let tableRows = teams.map(t => `<tr><td>${t.team}</td><td>${t.pts}</td></tr>`).join("");
                 container.innerHTML += `
@@ -343,6 +335,7 @@
 
         function renderScorers() {
             const container = document.getElementById("scorers-container");
+            container.innerHTML = ""; // Clear old contents
             scorers.forEach(s => {
                 container.innerHTML += `
                     <div class="scorer-item">
@@ -358,21 +351,33 @@
         renderGroups();
         renderScorers();
 
-        // Countdown to the first upcoming match in the list
-        const nextMatchTime = new Date(matches.find(m => m.status === "upcoming").utcTime).getTime();
-        setInterval(function() {
-            const now = new Date().getTime();
-            const distance = nextMatchTime - now;
-            if (distance < 0) {
-                document.getElementById("timer").innerHTML = "MATCH IN PROGRESS!";
+        // --- THE AUTO-UPDATING TIMER ---
+        function updateTimer() {
+            const nextMatch = matches.find(m => m.status === "upcoming");
+            
+            if (!nextMatch) {
+                document.getElementById("timer").innerHTML = "GROUP STAGE COMPLETE!";
                 return;
             }
-            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((distance % (1000 * 60)) / 1000);
-            document.getElementById("timer").innerHTML = `${d}d ${h}h ${m}m ${s}s`;
-        }, 1000);
+
+            const nextMatchTime = new Date(nextMatch.utcTime).getTime();
+            const now = new Date().getTime();
+            const distance = nextMatchTime - now;
+
+            if (distance < 0) {
+                document.getElementById("timer").innerHTML = "MATCH IN PROGRESS!";
+            } else {
+                const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((distance % (1000 * 60)) / 1000);
+                document.getElementById("timer").innerHTML = `Next Kickoff: ${d}d ${h}h ${m}m ${s}s`;
+            }
+        }
+        
+        // Start the clock!
+        setInterval(updateTimer, 1000);
+        updateTimer();
     </script>
 </body>
 </html>
